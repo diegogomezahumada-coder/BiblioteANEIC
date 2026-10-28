@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BibliotecANEIC · Biblioteca digital de Ingeniería Civil</title>
+<meta name="description" content="BibliotecANEIC: la biblioteca digital de ingeniería civil hecha por y para estudiantes. Apuntes, PDFs, normas, videos, cursos, plantillas y software de todas las áreas.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f5f3ee; --surface:#ffffff; --surface-2:#ece9e1; --ink:#1b1f24; --muted:#5d6670;
+  --line:#d9d4c7; --brand:#1f4e79; --brand-2:#e8a33d; --accent:#c4512a; --ok:#2e7d4f;
+  --shadow:0 1px 2px rgba(0,0,0,.05),0 6px 20px rgba(0,0,0,.06); --radius:14px;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#12161b; --surface:#1a2027; --surface-2:#232b34; --ink:#e9edf1; --muted:#9aa6b2;
+    --line:#2f3944; --brand:#6aa7dd; --brand-2:#f0b65a; --accent:#ef7a52; --ok:#5cc28a;
+    --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px rgba(0,0,0,.35);
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#12161b; --surface:#1a2027; --surface-2:#232b34; --ink:#e9edf1; --muted:#9aa6b2;
+  --line:#2f3944; --brand:#6aa7dd; --brand-2:#f0b65a; --accent:#ef7a52; --ok:#5cc28a;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px rgba(0,0,0,.35);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:Inter,system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.55;overflow-x:hidden}
+a{color:var(--brand);text-decoration:none}
+button,input,select,textarea{font:inherit;color:inherit}
+h1,h2,h3{font-family:Archivo,Inter,sans-serif;line-height:1.15}
+.wrap{max-width:1200px;margin:0 auto;padding:0 16px}
+
+/* ---------- Header ---------- */
+header{position:sticky;top:0;z-index:50;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.nav{display:flex;align-items:center;justify-content:space-between;height:64px;gap:12px}
+.logo{display:flex;align-items:center;gap:10px;font-family:Archivo;font-weight:800;font-size:1.25rem;color:var(--ink)}
+.logo-mark{width:36px;height:36px;border-radius:9px;background:var(--brand);display:grid;place-items:center}
+.logo b{color:var(--brand)}
+.nav-links{display:flex;gap:4px;align-items:center}
+.nav-links a{padding:8px 12px;border-radius:8px;color:var(--ink);font-weight:500;font-size:.95rem}
+.nav-links a:hover{background:var(--surface-2)}
+.icon-btn{background:var(--surface);border:1px solid var(--line);border-radius:10px;width:40px;height:40px;display:grid;place-items:center;cursor:pointer}
+.menu-btn{display:none}
+@media(max-width:860px){
+  .menu-btn{display:grid}
+  .nav-links{position:fixed;top:64px;left:0;right:0;flex-direction:column;align-items:stretch;background:var(--bg);border-bottom:1px solid var(--line);padding:12px 16px;display:none}
+  .nav-links.open{display:flex}
+}
+
+/* ---------- Hero ---------- */
+.hero{padding:64px 0 40px;position:relative;overflow:hidden}
+.hero::before{content:"";position:absolute;inset:0;background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);background-size:40px 40px;opacity:.45;mask-image:radial-gradient(ellipse at top,#000 30%,transparent 75%);pointer-events:none}
+.hero .wrap{position:relative}
+.eyebrow{display:inline-block;font-size:.8rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);background:color-mix(in srgb,var(--accent) 12%,transparent);padding:5px 10px;border-radius:99px;margin-bottom:16px}
+.hero h1{font-size:clamp(2.1rem,6vw,3.8rem);font-weight:800;max-width:850px}
+.hero h1 span{color:var(--brand)}
+.hero p.lead{font-size:1.1rem;color:var(--muted);max-width:640px;margin:16px 0 28px}
+.search{display:flex;gap:8px;background:var(--surface);border:2px solid var(--line);border-radius:16px;padding:6px;max-width:720px;box-shadow:var(--shadow)}
+.search:focus-within{border-color:var(--brand)}
+.search input{flex:1;border:0;background:transparent;padding:12px;font-size:1.05rem;outline:none;min-width:0}
+.btn{background:var(--brand);color:#fff;border:0;border-radius:11px;padding:11px 18px;font-weight:600;cursor:pointer;white-space:nowrap}
+.btn:hover{filter:brightness(1.08)}
+.btn.ghost{background:var(--surface);color:var(--ink);border:1px solid var(--line)}
+.btn.sm{padding:7px 12px;font-size:.88rem;border-radius:9px}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+.chip{border:1px solid var(--line);background:var(--surface);padding:6px 12px;border-radius:99px;font-size:.88rem;cursor:pointer}
+.chip:hover,.chip.on{background:var(--brand);color:#fff;border-color:var(--brand)}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:40px;max-width:720px}
+.stat{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px}
+.stat strong{display:block;font-family:Archivo;font-size:1.6rem;color:var(--brand)}
+.stat span{font-size:.85rem;color:var(--muted)}
+@media(max-width:600px){.stats{grid-template-columns:repeat(2,1fr)}}
+
+/* ---------- Sections ---------- */
+section{padding:48px 0}
+.sec-head{display:flex;justify-content:space-between;align-items:end;gap:16px;margin-bottom:24px;flex-wrap:wrap}
+.sec-head h2{font-size:clamp(1.6rem,4vw,2.2rem)}
+.sec-head p{color:var(--muted)}
+
+/* Areas grid */
+.areas{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px}
+.area{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:18px;cursor:pointer;text-align:left;transition:transform .15s,box-shadow .15s;position:relative;overflow:hidden}
+.area:hover{transform:translateY(-2px);box-shadow:var(--shadow)}
+.area::after{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--c)}
+.area .ico{font-size:1.6rem}
+.area h3{font-size:1.05rem;margin:8px 0 4px}
+.area p{font-size:.85rem;color:var(--muted)}
+.area .count{position:absolute;top:14px;right:14px;font-size:.78rem;font-weight:600;color:var(--muted);background:var(--surface-2);padding:2px 8px;border-radius:99px}
+
+/* Explorer */
+.explorer{display:grid;grid-template-columns:280px 1fr;gap:20px;align-items:start}
+@media(max-width:900px){.explorer{grid-template-columns:1fr}}
+.tree{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:12px;position:sticky;top:80px;max-height:calc(100vh - 100px);overflow:auto}
+@media(max-width:900px){.tree{position:static;max-height:none}}
+.tree h4{font-size:.78rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);padding:6px 8px}
+.tree details{border-radius:8px}
+.tree summary{list-style:none;cursor:pointer;padding:7px 8px;border-radius:8px;display:flex;align-items:center;gap:8px;font-weight:500;font-size:.93rem}
+.tree summary::-webkit-details-marker{display:none}
+.tree summary::before{content:"▸";color:var(--muted);transition:transform .15s;font-size:.8rem}
+.tree details[open]>summary::before{transform:rotate(90deg)}
+.tree summary:hover,.tree .leaf:hover{background:var(--surface-2)}
+.tree summary.active,.tree .leaf.active{background:color-mix(in srgb,var(--brand) 14%,transparent);color:var(--brand)}
+.tree .leaf{display:block;width:100%;text-align:left;background:none;border:0;padding:6px 8px 6px 30px;border-radius:8px;font-size:.88rem;cursor:pointer;color:var(--ink)}
+.tree .all{display:block;width:100%;text-align:left;background:none;border:0;padding:7px 8px;border-radius:8px;font-weight:600;cursor:pointer}
+
+.toolbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:14px}
+.toolbar select,.toolbar input{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:9px 11px}
+.toolbar input{flex:1;min-width:180px}
+.crumbs{font-size:.9rem;color:var(--muted);margin-bottom:12px}
+.crumbs b{color:var(--ink)}
+.type-chips{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px}
+
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:16px;display:flex;flex-direction:column;gap:8px}
+.card:hover{box-shadow:var(--shadow)}
+.card .top{display:flex;justify-content:space-between;gap:8px;align-items:start}
+.tag{font-size:.74rem;font-weight:600;padding:3px 8px;border-radius:6px;background:var(--surface-2);color:var(--muted);white-space:nowrap}
+.tag.t{background:color-mix(in srgb,var(--tc) 16%,transparent);color:var(--tc)}
+.card h3{font-size:1rem;font-family:Inter;font-weight:600}
+.card p{font-size:.88rem;color:var(--muted);flex:1}
+.card .meta{display:flex;gap:6px;flex-wrap:wrap}
+.card .actions{display:flex;gap:6px;margin-top:4px}
+.fav{background:none;border:1px solid var(--line);border-radius:9px;width:36px;cursor:pointer;font-size:1rem}
+.fav.on{color:var(--brand-2);border-color:var(--brand-2)}
+.empty{text-align:center;padding:48px 16px;color:var(--muted);background:var(--surface);border:1px dashed var(--line);border-radius:var(--radius)}
+.pager{display:flex;justify-content:center;margin-top:20px}
+
+/* Feature boxes */
+.features{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}
+.feature{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:20px}
+.feature h3{font-size:1.05rem;margin:6px 0}
+.feature p{color:var(--muted);font-size:.92rem}
+
+/* Form */
+.form{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:20px;display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.form label{display:flex;flex-direction:column;gap:6px;font-size:.88rem;font-weight:500}
+.form input,.form select,.form textarea{background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:10px}
+.form .full{grid-column:1/-1}
+@media(max-width:640px){.form{grid-template-columns:1fr}}
+.note{font-size:.85rem;color:var(--muted)}
+
+/* FAQ */
+.faq details{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px 16px;margin-bottom:8px}
+.faq summary{cursor:pointer;font-weight:600}
+.faq p{color:var(--muted);margin-top:8px}
+
+/* Modal */
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.5);display:none;place-items:center;z-index:100;padding:16px}
+.modal.open{display:grid}
+.modal-box{background:var(--surface);border-radius:var(--radius);max-width:560px;width:100%;padding:24px;max-height:90vh;overflow:auto}
+.modal-box h3{font-size:1.3rem;margin:8px 0}
+.modal-box dl{display:grid;grid-template-columns:110px 1fr;gap:6px 12px;margin:14px 0;font-size:.92rem}
+.modal-box dt{color:var(--muted)}
+
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(100px);background:var(--ink);color:var(--bg);padding:12px 18px;border-radius:10px;transition:transform .25s;z-index:200;font-size:.92rem}
+.toast.show{transform:translateX(-50%) translateY(0)}
+
+footer{border-top:1px solid var(--line);padding:32px 0;margin-top:24px;color:var(--muted);font-size:.9rem}
+footer .cols{display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap}
+</style>
+</head>
+<body>
+
+<!-- ================= HEADER ================= -->
+<header>
+  <div class="wrap nav">
+    <a href="#inicio" class="logo">
+      <span class="logo-mark" aria-hidden="true">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M3 21h18M5 21V10l7-5 7 5v11M9 21v-6h6v6"/></svg>
+      </span>
+      <span>Bibliotec<b>ANEIC</b></span>
+    </a>
+    <nav class="nav-links" id="navLinks">
+      <a href="#areas">Áreas</a>
+      <a href="#explorar">Explorar</a>
+      <a href="#favoritos" id="favLink">Favoritos</a>
+      <a href="#aportar">Aportar</a>
+      <a href="#acerca">Acerca</a>
+    </nav>
+    <div style="display:flex;gap:8px">
+      <button class="icon-btn" id="themeBtn" title="Cambiar tema" aria-label="Cambiar tema">◐</button>
+      <button class="icon-btn menu-btn" id="menuBtn" aria-label="Menú">☰</button>
+    </div>
+  </div>
+</header>
+
+<!-- ================= HERO ================= -->
+<section class="hero" id="inicio">
+  <div class="wrap">
+    <span class="eyebrow">Hecha por estudiantes · para estudiantes</span>
+    <h1>Toda la <span>ingeniería civil</span>, en un solo lugar.</h1>
+    <p class="lead">Apuntes, libros, normas, videos, cursos, plantillas y software de todas las áreas de la carrera, organizados como un árbol de carpetas para que encuentres lo que necesitas en segundos.</p>
+    <form class="search" id="heroSearch">
+      <input type="search" id="heroInput" placeholder="Busca: losas, Mohr-Coulomb, Revit, precios unitarios, NTC…" aria-label="Buscar recursos">
+      <button class="btn" type="submit">Buscar</button>
+    </form>
+    <div class="chips" id="popular"></div>
+    <div class="stats">
+      <div class="stat"><strong id="stRec">0</strong><span>recursos</span></div>
+      <div class="stat"><strong id="stArea">0</strong><span>áreas</span></div>
+      <div class="stat"><strong id="stSub">0</strong><span>subtemas</span></div>
+      <div class="stat"><strong id="stTipo">0</strong><span>tipos de material</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= ÁREAS ================= -->
+<section id="areas">
+  <div class="wrap">
+    <div class="sec-head">
+      <div>
+        <h2>Áreas de la ingeniería civil</h2>
+        <p>Desde ciencias básicas hasta BIM, Lean y gestión de proyectos.</p>
+      </div>
+    </div>
+    <div class="areas" id="areasGrid"></div>
+  </div>
+</section>
+
+<!-- ================= EXPLORADOR ================= -->
+<section id="explorar">
+  <div class="wrap">
+    <div class="sec-head">
+      <div>
+        <h2>Explorar la biblioteca</h2>
+        <p>Navega por carpetas o filtra por tipo, nivel y palabra clave.</p>
+      </div>
+    </div>
+    <div class="explorer">
+      <aside class="tree" id="tree" aria-label="Árbol de carpetas"></aside>
+      <div>
+        <div class="toolbar">
+          <input type="search" id="q" placeholder="Filtrar por título, tema o etiqueta…">
+          <select id="nivel" aria-label="Nivel">
+            <option value="">Todos los niveles</option>
+            <option>Básico</option><option>Intermedio</option><option>Avanzado</option>
+          </select>
+          <select id="orden" aria-label="Ordenar">
+            <option value="az">A → Z</option>
+            <option value="za">Z → A</option>
+            <option value="nuevo">Más recientes</option>
+          </select>
+          <label class="note" style="display:flex;gap:6px;align-items:center"><input type="checkbox" id="soloFav"> Solo favoritos</label>
+        </div>
+        <div class="crumbs" id="crumbs"></div>
+        <div class="type-chips" id="typeChips"></div>
+        <div class="grid" id="results"></div>
+        <div class="pager"><button class="btn ghost" id="more" hidden>Cargar más</button></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= CÓMO FUNCIONA ================= -->
+<section>
+  <div class="wrap">
+    <div class="sec-head"><h2>¿Qué encuentras aquí?</h2></div>
+    <div class="features">
+      <div class="feature"><div>📚</div><h3>Libros y PDFs</h3><p>Textos de referencia, manuales y material de clase seleccionado por estudiantes y profesores.</p></div>
+      <div class="feature"><div>📐</div><h3>Normas y reglamentos</h3><p>NTC, manuales CFE, normativa SCT/IMT, CONAGUA, NOM y códigos internacionales.</p></div>
+      <div class="feature"><div>🎥</div><h3>Videos y cursos</h3><p>Clases grabadas, cursos abiertos y tutoriales de software paso a paso.</p></div>
+      <div class="feature"><div>🧮</div><h3>Plantillas y hojas de cálculo</h3><p>APU, programas de obra, memorias de cálculo y formatos listos para usar.</p></div>
+      <div class="feature"><div>💻</div><h3>Software</h3><p>Herramientas de análisis, diseño, BIM, topografía y gestión con enlaces oficiales.</p></div>
+      <div class="feature"><div>🏢</div><h3>Empresas y gremios</h3><p>Colegios, cámaras, institutos y empresas del sector para prácticas y vinculación.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= APORTAR ================= -->
+<section id="aportar">
+  <div class="wrap">
+    <div class="sec-head">
+      <div>
+        <h2>Aporta un recurso</h2>
+        <p>¿Tienes apuntes, un link útil o una plantilla? Súmalo a la biblioteca.</p>
+      </div>
+    </div>
+    <form class="form" id="addForm">
+      <label class="full">Título *<input name="t" required maxlength="140" placeholder="Ej. Apuntes de Mecánica de Suelos I"></label>
+      <label>Área *<select name="area" id="fArea" required></select></label>
+      <label>Subtema *<select name="sub" id="fSub" required></select></label>
+      <label>Tipo *<select name="tipo" id="fTipo" required></select></label>
+      <label>Nivel<select name="nivel"><option>Básico</option><option selected>Intermedio</option><option>Avanzado</option></select></label>
+      <label class="full">Enlace (Drive, YouTube, web…) *<input name="url" type="url" required placeholder="https://"></label>
+      <label class="full">Descripción<textarea name="desc" rows="3" maxlength="400" placeholder="¿Qué contiene y para qué sirve?"></textarea></label>
+      <label>Autor / quien aporta<input name="autor" maxlength="80" placeholder="Nombre o capítulo ANEIC"></label>
+      <label>Etiquetas (separadas por coma)<input name="tags" maxlength="120" placeholder="losas, concreto, NTC"></label>
+      <div class="full" style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
+        <button class="btn" type="submit">Agregar recurso</button>
+        <button class="btn ghost" type="button" id="exportBtn">Exportar aportes (JSON)</button>
+        <span class="note">Los aportes se guardan en tu navegador; expórtalos y envíalos al equipo de BibliotecANEIC para publicarlos para todos.</span>
+      </div>
+    </form>
+  </div>
+</section>
+
+<!-- ================= ACERCA / FAQ ================= -->
+<section id="acerca">
+  <div class="wrap">
+    <div class="sec-head">
+      <div>
+        <h2>Acerca de BibliotecANEIC</h2>
+        <p>Un proyecto de la Asociación Nacional de Estudiantes de Ingeniería Civil.</p>
+      </div>
+    </div>
+    <div class="faq">
+      <details open><summary>¿Qué es BibliotecANEIC?</summary><p>Una biblioteca digital abierta que reúne material de todas las áreas de la ingeniería civil, organizado por área y subtema, para que cualquier estudiante del país tenga acceso a los mismos recursos.</p></details>
+      <details><summary>¿Quién puede aportar?</summary><p>Cualquier estudiante, egresado o profesor. El equipo de BibliotecANEIC revisa cada aporte antes de publicarlo para todos.</p></details>
+      <details><summary>¿Se pueden subir libros con derechos de autor?</summary><p>No. Solo compartimos material propio (apuntes, plantillas), material de acceso libre o enlaces a las fuentes oficiales. Si encuentras algo que no debería estar aquí, repórtalo.</p></details>
+      <details><summary>¿Cómo reporto un enlace roto?</summary><p>Abre el recurso y usa el botón “Reportar”. Se abrirá tu correo con los datos del recurso listos para enviar.</p></details>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap cols">
+    <div><strong style="color:var(--ink)">BibliotecANEIC</strong><br>Biblioteca digital de Ingeniería Civil · ANEIC</div>
+    <div>Contacto: <a href="mailto:bibliotecaneic@ejemplo.com">bibliotecaneic@ejemplo.com</a></div>
+    <div>© <span id="year"></span> ANEIC. Contenido con fines educativos.</div>
+  </div>
+</footer>
+
+<!-- Modal detalle -->
+<div class="modal" id="modal" role="dialog" aria-modal="true">
+  <div class="modal-box" id="modalBox"></div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+/* =========================================================
+   1. CONFIGURACIÓN
+   ========================================================= */
+const CONTACTO = "bibliotecaneic@ejemplo.com"; // ← cambia por el correo real
+
+const TIPOS = {
+  pdf:       {n:"PDF / Libro",   c:"#c4512a", i:"📄"},
+  apuntes:   {n:"Apuntes",       c:"#7b5ea7", i:"📝"},
+  video:     {n:"Video",         c:"#d13c3c", i:"🎥"},
+  curso:     {n:"Curso",         c:"#2e7d4f", i:"🎓"},
+  norma:     {n:"Norma",         c:"#1f4e79", i:"📐"},
+  plantilla: {n:"Plantilla",     c:"#b07d1a", i:"🧮"},
+  software:  {n:"Software",      c:"#0f7f8c", i:"💻"},
+  enlace:    {n:"Sitio web",     c:"#5d6670", i:"🔗"},
+  empresa:   {n:"Empresa / Org.",c:"#8a4f2a", i:"🏢"}
+};
+
+/* Árbol de carpetas: área → subtemas */
+const AREAS = [
+  {id:"basicas", n:"Ciencias básicas", i:"∑", c:"#5b6bbf", d:"Matemáticas, física, química y programación.",
+   s:["Cálculo","Álgebra lineal","Ecuaciones diferenciales","Probabilidad y estadística","Métodos numéricos","Física","Química","Programación"]},
+  {id:"mecanica", n:"Mecánica y resistencia", i:"⚙️", c:"#7b5ea7", d:"Estática, dinámica y mecánica de materiales.",
+   s:["Estática","Dinámica","Mecánica de materiales","Mecánica del medio continuo"]},
+  {id:"estructuras", n:"Estructuras", i:"🏗️", c:"#c4512a", d:"Análisis y diseño estructural.",
+   s:["Análisis estructural","Concreto reforzado","Concreto presforzado","Acero estructural","Mampostería","Madera","Puentes","Diseño sísmico","Dinámica estructural","Análisis por elementos finitos"]},
+  {id:"geotecnia", n:"Geotecnia", i:"⛰️", c:"#8a6a3a", d:"Suelos, rocas y cimentaciones.",
+   s:["Geología","Mecánica de suelos","Mecánica de rocas","Cimentaciones","Estabilidad de taludes","Muros de contención","Exploración y laboratorio"]},
+  {id:"hidraulica", n:"Hidráulica e hidrología", i:"💧", c:"#2c7fb8", d:"Agua en movimiento y recursos hídricos.",
+   s:["Mecánica de fluidos","Hidráulica de tuberías","Canales","Hidrología","Obras hidráulicas","Presas","Hidráulica marítima y costas"]},
+  {id:"sanitaria", n:"Sanitaria y ambiental", i:"🌿", c:"#2e8b57", d:"Agua potable, drenaje y medio ambiente.",
+   s:["Agua potable","Alcantarillado y drenaje","Tratamiento de aguas","Residuos sólidos","Impacto ambiental"]},
+  {id:"vias", n:"Vías terrestres y transporte", i:"🛣️", c:"#4a4a4a", d:"Carreteras, pavimentos, ferrocarriles y tránsito.",
+   s:["Carreteras","Pavimentos","Ferrocarriles","Aeropuertos","Ingeniería de tránsito","Planeación del transporte"]},
+  {id:"topografia", n:"Topografía y geomática", i:"📍", c:"#0f7f8c", d:"Levantamientos, GPS, SIG y drones.",
+   s:["Topografía","Geodesia y GNSS","Fotogrametría y drones","Sistemas de información geográfica"]},
+  {id:"materiales", n:"Materiales de construcción", i:"🧱", c:"#a0522d", d:"Concreto, acero, agregados y laboratorio.",
+   s:["Tecnología del concreto","Agregados","Asfaltos","Acero y metales","Control de calidad"]},
+  {id:"construccion", n:"Construcción", i:"👷", c:"#e08a1e", d:"Procesos, maquinaria y supervisión de obra.",
+   s:["Procedimientos constructivos","Maquinaria y equipo","Edificación","Supervisión de obra","Seguridad e higiene","Instalaciones"]},
+  {id:"costos", n:"Costos y presupuestos", i:"💲", c:"#b07d1a", d:"Precios unitarios, presupuestos y control.",
+   s:["Precios unitarios (APU)","Cuantificación","Presupuestos","Estimaciones","Ingeniería económica"]},
+  {id:"gestion", n:"Gestión de proyectos", i:"📊", c:"#1f4e79", d:"Planeación, programación y control.",
+   s:["Project Management (PMBOK)","Programación de obra (CPM)","Control de proyectos","Contratos y licitaciones","Administración de empresas constructoras"]},
+  {id:"bim", n:"BIM y VDC", i:"🧊", c:"#3a7bd5", d:"Modelado, coordinación y diseño virtual.",
+   s:["BIM Modeling","BIM Coordination","VDC","4D / 5D","Normas y estándares BIM"]},
+  {id:"lean", n:"Lean Construction", i:"♻️", c:"#2e7d4f", d:"Last Planner, IPD y mejora continua.",
+   s:["Fundamentos Lean","Last Planner System","IPD","Target Value Design"]},
+  {id:"normas", n:"Normatividad", i:"📐", c:"#34495e", d:"Reglamentos y normas nacionales e internacionales.",
+   s:["Reglamento y NTC CDMX","Manuales CFE","Normativa SCT / IMT","CONAGUA","NOM y NMX","Códigos internacionales (ACI, AISC, ASCE)"]},
+  {id:"sostenible", n:"Sostenibilidad", i:"🌎", c:"#3d9970", d:"Construcción sustentable y economía circular.",
+   s:["Edificación sustentable","Economía circular","Energía en edificios","Resiliencia y riesgo"]},
+  {id:"software", n:"Software", i:"💻", c:"#0f7f8c", d:"Análisis, diseño, dibujo y gestión.",
+   s:["CAD","Análisis estructural","BIM","Geotecnia","Hidráulica","Topografía y SIG","Gestión y programación","Programación para ingenieros"]},
+  {id:"carrera", n:"Carrera y vinculación", i:"🎯", c:"#8a4f2a", d:"Empresas, gremios, becas y prácticas.",
+   s:["Colegios y cámaras","Institutos de investigación","Empresas constructoras","Bolsa de trabajo y prácticas","Certificaciones","Tesis y titulación"]}
+];
+
+/* Recursos iniciales (enlaces a sitios oficiales y abiertos).
+   Formato: [titulo, area, subtema, tipo, nivel, url, descripcion, tags] */
+const SEED = [
+  ["MIT OpenCourseWare – Civil and Environmental Engineering","basicas","Métodos numéricos","curso","Intermedio","https://ocw.mit.edu/","Cursos abiertos del MIT con notas, tareas y exámenes de ingeniería civil y ambiental.","mit, abierto, ingles"],
+  ["Khan Academy – Matemáticas y física","basicas","Cálculo","curso","Básico","https://es.khanacademy.org/","Cursos gratuitos de cálculo, álgebra, estadística y física en español.","calculo, fisica, gratis"],
+  ["NPTEL – Civil Engineering","estructuras","Análisis estructural","video","Intermedio","https://nptel.ac.in/","Cientos de cursos en video de institutos de India: estructuras, geotecnia, hidráulica y más.","videos, ingles, universidad"],
+  ["Python para ingenieros – documentación oficial","basicas","Programación","enlace","Básico","https://docs.python.org/es/3/tutorial/","Tutorial oficial de Python en español; base para automatizar cálculos.","python, programacion"],
+  ["OpenSees – análisis estructural y sísmico","software","Análisis estructural","software","Avanzado","https://opensees.berkeley.edu/","Plataforma abierta de la Universidad de Berkeley para simulación sísmica.","sismo, fem, open source"],
+  ["Gaceta Oficial CDMX – Normas Técnicas Complementarias","normas","Reglamento y NTC CDMX","norma","Intermedio","https://data.consejeria.cdmx.gob.mx/","Consulta del Reglamento de Construcciones y sus NTC (concreto, acero, cimentaciones, sismo, viento).","ntc, rcdf, cdmx"],
+  ["Normativa SCT – Instituto Mexicano del Transporte","normas","Normativa SCT / IMT","norma","Intermedio","https://normas.imt.mx/","Normas y manuales para infraestructura del transporte: carreteras, pavimentos y puentes.","sct, carreteras, imt"],
+  ["Instituto Mexicano del Transporte","vias","Planeación del transporte","enlace","Intermedio","https://imt.mx/","Publicaciones técnicas e investigaciones sobre transporte en México.","investigacion, publicaciones"],
+  ["CONAGUA – Manual de Agua Potable, Alcantarillado y Saneamiento","sanitaria","Agua potable","norma","Intermedio","https://www.gob.mx/conagua","Manuales MAPAS para diseño de sistemas de agua potable y drenaje.","mapas, conagua, drenaje"],
+  ["Instituto de Ingeniería UNAM","carrera","Institutos de investigación","empresa","Avanzado","https://www.iingen.unam.mx/","Investigación en estructuras, geotecnia, hidráulica y sismología; series y publicaciones.","unam, investigacion"],
+  ["CMIC – Cámara Mexicana de la Industria de la Construcción","carrera","Colegios y cámaras","empresa","Básico","https://www.cmic.org/","Cámara del sector; cursos, eventos y vinculación con constructoras.","cmic, gremio"],
+  ["Colegio de Ingenieros Civiles de México","carrera","Colegios y cámaras","empresa","Básico","https://www.cicm.org.mx/","Colegio profesional: eventos, comités técnicos y certificación.","cicm, colegio"],
+  ["Sociedad Mexicana de Ingeniería Geotécnica","geotecnia","Cimentaciones","empresa","Intermedio","https://www.smig.org.mx/","Publicaciones, reuniones y material técnico de geotecnia en México.","smig, suelos"],
+  ["Sociedad Mexicana de Ingeniería Sísmica","estructuras","Diseño sísmico","empresa","Intermedio","https://www.smis.mx/","Congresos y artículos sobre ingeniería sísmica.","smis, sismo"],
+  ["Servicio Sismológico Nacional","estructuras","Diseño sísmico","enlace","Básico","http://www.ssn.unam.mx/","Catálogo de sismos y reportes especiales de la UNAM.","sismos, datos"],
+  ["American Concrete Institute (ACI)","materiales","Tecnología del concreto","enlace","Avanzado","https://www.concrete.org/","Códigos y publicaciones de concreto; recursos para estudiantes.","aci, concreto, codigo"],
+  ["IMCYC – Instituto Mexicano del Cemento y del Concreto","materiales","Tecnología del concreto","enlace","Intermedio","https://www.imcyc.com/","Revista, cursos y normas de concreto en México.","concreto, cemento"],
+  ["AISC – American Institute of Steel Construction","estructuras","Acero estructural","enlace","Avanzado","https://www.aisc.org/","Especificaciones y material didáctico de acero estructural.","acero, aisc"],
+  ["INEGI – Mapa Digital y datos geográficos","topografia","Sistemas de información geográfica","enlace","Básico","https://www.inegi.org.mx/","Cartografía, modelos de elevación y datos para proyectos.","inegi, mapas, mde"],
+  ["QGIS – Sistema de información geográfica libre","software","Topografía y SIG","software","Intermedio","https://qgis.org/","SIG gratuito y de código abierto para análisis espacial.","sig, gratis"],
+  ["HEC-RAS – U.S. Army Corps of Engineers","software","Hidráulica","software","Intermedio","https://www.hec.usace.army.mil/software/hec-ras/","Modelación hidráulica de ríos y canales, gratuita.","rios, canales, hec"],
+  ["EPANET – redes de agua potable (EPA)","software","Hidráulica","software","Intermedio","https://www.epa.gov/water-research/epanet","Modelación de redes de distribución de agua, gratuita.","redes, agua"],
+  ["Autodesk Education – software gratuito para estudiantes","software","BIM","software","Básico","https://www.autodesk.com/education/","Licencias educativas de Revit, AutoCAD, Civil 3D y Navisworks.","revit, autocad, civil3d"],
+  ["buildingSMART International – estándares openBIM","bim","Normas y estándares BIM","norma","Avanzado","https://www.buildingsmart.org/","IFC y estándares abiertos de interoperabilidad BIM.","ifc, openbim"],
+  ["Lean Construction Institute","lean","Fundamentos Lean","enlace","Intermedio","https://leanconstruction.org/","Recursos, glosario y comunidad Lean en construcción.","lci, lean"],
+  ["Project Management Institute","gestion","Project Management (PMBOK)","enlace","Intermedio","https://www.pmi.org/","Estándares de gestión de proyectos y certificaciones (CAPM, PMP).","pmi, pmbok"],
+  ["Coursera – Construction Management","gestion","Control de proyectos","curso","Intermedio","https://www.coursera.org/","Especializaciones en gestión de la construcción y BIM (auditables gratis).","coursera, cursos"],
+  ["CompraNet / licitaciones públicas","gestion","Contratos y licitaciones","enlace","Intermedio","https://www.gob.mx/","Consulta de licitaciones de obra pública y su normativa.","licitacion, obra publica"],
+  ["Plantilla de análisis de precios unitarios","costos","Precios unitarios (APU)","plantilla","Intermedio","#","Hoja de cálculo con catálogo de conceptos, cuadrillas, básicos y sobrecostos. (Sube aquí tu archivo de Drive)","apu, excel"],
+  ["Plantilla de programa de obra (Gantt / CPM)","gestion","Programación de obra (CPM)","plantilla","Básico","#","Formato para programa de obra con ruta crítica. (Sube aquí tu archivo de Drive)","gantt, cpm"],
+  ["Apuntes de Mecánica de Suelos I","geotecnia","Mecánica de suelos","apuntes","Básico","#","Espacio para los apuntes de la comunidad: clasificación SUCS, consolidación y resistencia.","suelos, sucs, consolidacion"],
+  ["Apuntes de Concreto Reforzado","estructuras","Concreto reforzado","apuntes","Intermedio","#","Espacio para apuntes de flexión, cortante y diseño de losas según NTC.","concreto, losas, vigas"],
+  ["U.S. Green Building Council – LEED","sostenible","Edificación sustentable","enlace","Intermedio","https://www.usgbc.org/","Sistema de certificación de edificios sustentables.","leed, verde"],
+  ["Ellen MacArthur Foundation – economía circular","sostenible","Economía circular","enlace","Básico","https://www.ellenmacarthurfoundation.org/","Recursos y casos sobre economía circular aplicada.","circular"],
+  ["CENAPRED – Atlas Nacional de Riesgos","sostenible","Resiliencia y riesgo","enlace","Intermedio","https://www.atlasnacionalderiesgos.gob.mx/","Mapas de peligro sísmico, inundación y deslizamientos.","riesgo, cenapred"],
+  ["STPS – Normas de seguridad en el trabajo","construccion","Seguridad e higiene","norma","Básico","https://www.gob.mx/stps","NOM-031-STPS y demás normas de seguridad en obra.","seguridad, nom"],
+];
+
+/* =========================================================
+   2. ESTADO Y ALMACENAMIENTO
+   ========================================================= */
+const store = {
+  get(k,def){try{const v=localStorage.getItem(k);return v?JSON.parse(v):def}catch(e){return def}},
+  set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
+};
+let favs = new Set(store.get("bn_favs",[]));
+let aportes = store.get("bn_aportes",[]);
+
+const toObj=(r,i,local)=>({id:(local?"L":"S")+i,t:r[0],area:r[1],sub:r[2],tipo:r[3],nivel:r[4],url:r[5],desc:r[6],tags:(r[7]||"").split(",").map(s=>s.trim()).filter(Boolean),fecha:r[8]||"2026-10-01",autor:r[9]||"Equipo BibliotecANEIC"});
+let RECURSOS=[];
+function buildRecursos(){
+  RECURSOS = SEED.map((r,i)=>toObj(r,i,false)).concat(aportes.map((a,i)=>({...a,id:"L"+i,local:true})));
+}
+buildRecursos();
+
+const state={area:"",sub:"",tipo:"",q:"",nivel:"",orden:"az",soloFav:false,limit:24};
+
+/* =========================================================
+   3. UTILIDADES
+   ========================================================= */
+const $=s=>document.querySelector(s);
+const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const norm=s=>String(s||"").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"");
+const areaById=id=>AREAS.find(a=>a.id===id);
+function toast(msg){const t=$("#toast");t.textContent=msg;t.classList.add("show");clearTimeout(t._h);t._h=setTimeout(()=>t.classList.remove("show"),2200)}
+
+/* =========================================================
+   4. RENDER
+   ========================================================= */
+function renderStats(){
+  $("#stRec").textContent=RECURSOS.length;
+  $("#stArea").textContent=AREAS.length;
+  $("#stSub").textContent=AREAS.reduce((n,a)=>n+a.s.length,0);
+  $("#stTipo").textContent=Object.keys(TIPOS).length;
+}
+
+function renderPopular(){
+  const pop=["NTC","Revit","Precios unitarios","Mecánica de suelos","HEC-RAS","Last Planner","Concreto","Pavimentos"];
+  $("#popular").innerHTML=pop.map(p=>`<button class="chip" data-q="${esc(p)}">${esc(p)}</button>`).join("");
+  $("#popular").onclick=e=>{const b=e.target.closest("[data-q]");if(b)goSearch(b.dataset.q)};
+}
+
+function renderAreas(){
+  $("#areasGrid").innerHTML=AREAS.map(a=>{
+    const n=RECURSOS.filter(r=>r.area===a.id).length;
+    return `<button class="area" style="--c:${a.c}" data-area="${a.id}">
+      <span class="count">${n}</span><div class="ico">${a.i}</div>
+      <h3>${esc(a.n)}</h3><p>${esc(a.d)}</p></button>`}).join("");
+  $("#areasGrid").onclick=e=>{const b=e.target.closest("[data-area]");if(!b)return;
+    Object.assign(state,{area:b.dataset.area,sub:"",limit:24});render();
+    $("#explorar").scrollIntoView()};
+}
+
+function renderTree(){
+  let h=`<h4>Carpetas</h4><button class="all ${!state.area?"active":""}" data-a="">📁 Toda la biblioteca</button>`;
+  h+=AREAS.map(a=>`<details ${state.area===a.id?"open":""}>
+      <summary class="${state.area===a.id&&!state.sub?"active":""}" data-a="${a.id}">${a.i} ${esc(a.n)}</summary>
+      ${a.s.map(s=>`<button class="leaf ${state.area===a.id&&state.sub===s?"active":""}" data-a="${a.id}" data-s="${esc(s)}">${esc(s)}</button>`).join("")}
+    </details>`).join("");
+  $("#tree").innerHTML=h;
+}
+$("#tree").addEventListener("click",e=>{
+  const el=e.target.closest("[data-a]");if(!el)return;
+  if(el.tagName==="SUMMARY"){ // permitir abrir/cerrar y seleccionar
+    state.area=el.dataset.a;state.sub="";
+  }else{state.area=el.dataset.a;state.sub=el.dataset.s||"";}
+  state.limit=24;renderResults();renderCrumbs();
+  document.querySelectorAll("#tree .active").forEach(x=>x.classList.remove("active"));
+  el.classList.add("active");
+});
+
+function renderCrumbs(){
+  const a=areaById(state.area);
+  let c=`<a href="#" data-reset>Biblioteca</a>`;
+  if(a)c+=` / <b>${esc(a.n)}</b>`;
+  if(state.sub)c+=` / <b>${esc(state.sub)}</b>`;
+  $("#crumbs").innerHTML=c;
+}
+$("#crumbs").addEventListener("click",e=>{if(e.target.matches("[data-reset]")){e.preventDefault();Object.assign(state,{area:"",sub:""});render()}});
+
+function renderTypeChips(){
+  $("#typeChips").innerHTML=`<button class="chip ${!state.tipo?"on":""}" data-t="">Todos</button>`+
+    Object.entries(TIPOS).map(([k,v])=>`<button class="chip ${state.tipo===k?"on":""}" data-t="${k}">${v.i} ${v.n}</button>`).join("");
+}
+$("#typeChips").addEventListener("click",e=>{const b=e.target.closest("[data-t]");if(!b)return;state.tipo=b.dataset.t;state.limit=24;renderTypeChips();renderResults()});
+
+function filtered(){
+  const q=norm(state.q);
+  let list=RECURSOS.filter(r=>
+    (!state.area||r.area===state.area)&&
+    (!state.sub||r.sub===state.sub)&&
+    (!state.tipo||r.tipo===state.tipo)&&
+    (!state.nivel||r.nivel===state.nivel)&&
+    (!state.soloFav||favs.has(r.t))&&
+    (!q||norm([r.t,r.desc,r.sub,areaById(r.area)?.n,r.tags.join(" "),r.autor].join(" ")).includes(q))
+  );
+  if(state.orden==="az")list.sort((a,b)=>a.t.localeCompare(b.t,"es"));
+  if(state.orden==="za")list.sort((a,b)=>b.t.localeCompare(a.t,"es"));
+  if(state.orden==="nuevo")list.sort((a,b)=>(b.fecha||"").localeCompare(a.fecha||""));
+  return list;
+}
+
+function card(r){
+  const t=TIPOS[r.tipo]||TIPOS.enlace,a=areaById(r.area);
+  const fav=favs.has(r.t);
+  const pending=r.url==="#";
+  return `<article class="card">
+    <div class="top"><span class="tag t" style="--tc:${t.c}">${t.i} ${t.n}</span><span class="tag">${esc(r.nivel)}</span></div>
+    <h3>${esc(r.t)}</h3>
+    <p>${esc(r.desc)}</p>
+    <div class="meta"><span class="tag">${a?a.i+" "+esc(a.n):""}</span><span class="tag">${esc(r.sub)}</span>${r.local?'<span class="tag" style="color:var(--ok)">Tu aporte</span>':""}</div>
+    <div class="actions">
+      ${pending?`<button class="btn sm ghost" disabled title="Pendiente de subir">Próximamente</button>`:`<a class="btn sm" href="${esc(r.url)}" target="_blank" rel="noopener">Abrir ↗</a>`}
+      <button class="btn sm ghost" data-info="${r.id}">Detalles</button>
+      <button class="fav ${fav?"on":""}" data-fav="${esc(r.t)}" aria-label="Favorito">${fav?"★":"☆"}</button>
+    </div>
+  </article>`;
+}
+
+function renderResults(){
+  const list=filtered();
+  const box=$("#results");
+  if(!list.length){
+    box.innerHTML=`<div class="empty" style="grid-column:1/-1">📂 Esta carpeta aún está vacía.<br><br><a class="btn sm" href="#aportar">Sé el primero en aportar</a></div>`;
+    $("#more").hidden=true;return;
+  }
+  box.innerHTML=list.slice(0,state.limit).map(card).join("");
+  $("#more").hidden=list.length<=state.limit;
+}
+$("#more").onclick=()=>{state.limit+=24;renderResults()};
+
+$("#results").addEventListener("click",e=>{
+  const f=e.target.closest("[data-fav]");
+  if(f){const k=f.dataset.fav;favs.has(k)?favs.delete(k):favs.add(k);store.set("bn_favs",[...favs]);renderResults();toast(favs.has(k)?"Agregado a favoritos":"Quitado de favoritos");return}
+  const i=e.target.closest("[data-info]");
+  if(i)openModal(RECURSOS.find(r=>r.id===i.dataset.info));
+});
+
+function openModal(r){
+  if(!r)return;
+  const t=TIPOS[r.tipo]||TIPOS.enlace,a=areaById(r.area);
+  const mail=`mailto:${CONTACTO}?subject=${encodeURIComponent("Reporte BibliotecANEIC: "+r.t)}&body=${encodeURIComponent("Recurso: "+r.t+"\nEnlace: "+r.url+"\nProblema: ")}`;
+  $("#modalBox").innerHTML=`
+    <span class="tag t" style="--tc:${t.c}">${t.i} ${t.n}</span>
+    <h3>${esc(r.t)}</h3>
+    <p style="color:var(--muted)">${esc(r.desc)}</p>
+    <dl>
+      <dt>Ruta</dt><dd>${a?esc(a.n):""} / ${esc(r.sub)}</dd>
+      <dt>Nivel</dt><dd>${esc(r.nivel)}</dd>
+      <dt>Aportado por</dt><dd>${esc(r.autor)}</dd>
+      <dt>Etiquetas</dt><dd>${r.tags.map(x=>"#"+esc(x)).join(" ")||"—"}</dd>
+    </dl>
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      ${r.url!=="#"?`<a class="btn" href="${esc(r.url)}" target="_blank" rel="noopener">Abrir recurso ↗</a>
+      <button class="btn ghost" id="copyBtn">Copiar enlace</button>`:""}
+      <a class="btn ghost" href="${mail}">Reportar</a>
+      <button class="btn ghost" id="closeModal">Cerrar</button>
+    </div>`;
+  $("#modal").classList.add("open");
+  $("#closeModal").onclick=closeModal;
+  const cp=$("#copyBtn");if(cp)cp.onclick=()=>{navigator.clipboard?.writeText(r.url).then(()=>toast("Enlace copiado"),()=>toast("No se pudo copiar"))};
+}
+function closeModal(){$("#modal").classList.remove("open")}
+$("#modal").addEventListener("click",e=>{if(e.target.id==="modal")closeModal()});
+document.addEventListener("keydown",e=>{if(e.key==="Escape")closeModal()});
+
+function render(){renderStats();renderAreas();renderTree();renderCrumbs();renderTypeChips();renderResults()}
+
+/* =========================================================
+   5. BÚSQUEDA Y FILTROS
+   ========================================================= */
+function goSearch(q){
+  Object.assign(state,{q,area:"",sub:"",tipo:"",limit:24});
+  $("#q").value=q;render();$("#explorar").scrollIntoView();
+}
+$("#heroSearch").onsubmit=e=>{e.preventDefault();goSearch($("#heroInput").value.trim())};
+let deb;$("#q").oninput=e=>{clearTimeout(deb);deb=setTimeout(()=>{state.q=e.target.value.trim();state.limit=24;renderResults()},180)};
+$("#nivel").onchange=e=>{state.nivel=e.target.value;renderResults()};
+$("#orden").onchange=e=>{state.orden=e.target.value;renderResults()};
+$("#soloFav").onchange=e=>{state.soloFav=e.target.checked;renderResults()};
+$("#favLink").onclick=e=>{e.preventDefault();state.soloFav=true;$("#soloFav").checked=true;renderResults();$("#explorar").scrollIntoView()};
+
+/* =========================================================
+   6. FORMULARIO DE APORTES
+   ========================================================= */
+function fillForm(){
+  $("#fArea").innerHTML=AREAS.map(a=>`<option value="${a.id}">${esc(a.n)}</option>`).join("");
+  $("#fTipo").innerHTML=Object.entries(TIPOS).map(([k,v])=>`<option value="${k}">${v.n}</option>`).join("");
+  const sub=()=>{$("#fSub").innerHTML=areaById($("#fArea").value).s.map(s=>`<option>${esc(s)}</option>`).join("")};
+  $("#fArea").onchange=sub;sub();
+}
+$("#addForm").onsubmit=e=>{
+  e.preventDefault();
+  const d=Object.fromEntries(new FormData(e.target));
+  if(!/^https?:\/\//i.test(d.url)){toast("El enlace debe iniciar con http:// o https://");return}
+  aportes.push({t:d.t.trim(),area:d.area,sub:d.sub,tipo:d.tipo,nivel:d.nivel,url:d.url.trim(),
+    desc:d.desc.trim()||"Sin descripción.",tags:d.tags.split(",").map(s=>s.trim()).filter(Boolean),
+    autor:d.autor.trim()||"Anónimo",fecha:new Date().toISOString().slice(0,10)});
+  store.set("bn_aportes",aportes);buildRecursos();
+  e.target.reset();fillForm();
+  Object.assign(state,{area:d.area,sub:d.sub,q:"",tipo:""});$("#q").value="";
+  render();toast("¡Gracias! Recurso agregado");$("#explorar").scrollIntoView();
+};
+$("#exportBtn").onclick=()=>{
+  if(!aportes.length){toast("Aún no tienes aportes");return}
+  const blob=new Blob([JSON.stringify(aportes,null,2)],{type:"application/json"});
+  const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="aportes-bibliotecaneic.json";a.click();
+  setTimeout(()=>URL.revokeObjectURL(a.href),1000);
+};
+
+/* =========================================================
+   7. TEMA, MENÚ E INICIO
+   ========================================================= */
+const savedTheme=store.get("bn_theme",null);
+if(savedTheme)document.documentElement.dataset.theme=savedTheme;
+$("#themeBtn").onclick=()=>{
+  const dark=document.documentElement.dataset.theme==="dark"||(!document.documentElement.dataset.theme&&matchMedia("(prefers-color-scheme: dark)").matches);
+  const t=dark?"light":"dark";document.documentElement.dataset.theme=t;store.set("bn_theme",t);
+};
+$("#menuBtn").onclick=()=>$("#navLinks").classList.toggle("open");
+$("#navLinks").onclick=e=>{if(e.target.tagName==="A")$("#navLinks").classList.remove("open")};
+$("#year").textContent=new Date().getFullYear();
+
+fillForm();renderPopular();render();
+</script>
+</body>
+</html>
